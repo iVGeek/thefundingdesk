@@ -1,0 +1,12 @@
+services:
+  - type: static
+    name: the-funding-desk
+    runtime: static
+    repo: https://github.com/iVGeek/thefundingdesk
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: PUBLIC_SITE_URL
+        value: https://the-funding-desk.onrender.com

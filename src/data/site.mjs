@@ -1,8 +1,10 @@
+const SITE_URL = import.meta.env.PUBLIC_SITE_URL || 'https://example.com';
+
 export const site = {
   name: 'The Funding Desk',
   tagline: 'Plain-English guides to business and property finance.',
   masthead: 'The Funding Desk — finance without the jargon.',
-  url: 'https://example.com',
+  url: SITE_URL,
   formEndpoint: '',
   phone: '020 7000 0000',
   email: 'hello@thefundingdesk.co.uk',
