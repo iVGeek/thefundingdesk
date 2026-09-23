@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCards from '../../components/ArticleCards.astro';
+import { guides } from '../../data/resources.mjs';
+import { site } from '../../data/site.mjs';
+---
+
+<Base
+  title="The Library | The Funding Desk"
+  description="Every The Funding Desk guide on business loans, bridging and property finance in one place."
+>
+  <section class="masthead" style="padding-bottom:1rem;">
+    <div class="container">
+      <span class="eyebrow">The library</span>
+      <h1>Every guide, on one shelf</h1>
+      <p class="sub">{guides.length} plain-English guides to business and property finance — rates, fees, criteria and the questions lenders actually work through.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0.5rem;">
+    <div class="container">
+      <div class="stat-band">
+        <div><b>{guides.length}</b><span>published guides</span></div>
+        <div><b>{site.publishNote}</b><span>last reviewed</span></div>
+        <div><b>0.64%p/m ↑</b><span>typical UK bridging range covered</span></div>
+      </div>
+      <ArticleCards />
+    </div>
+  </section>
+</Base>

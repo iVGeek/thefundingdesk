@@ -1,0 +1,100 @@
+---
+const { compact = false } = Astro.props;
+---
+
+<div id="shop-calc" class="card" style={compact ? 'padding:1.2rem;' : 'padding:1.6rem;'}>
+  <h2 style="margin-top:0;">Cost calculator</h2>
+  <p style="color:var(--muted); margin-top:0;">Indicative monthly figures. Nothing is stored or committed.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" type="button" data-mode="bridging" role="tab">Bridging</button>
+    <button class="tab" type="button" data-mode="business" role="tab">Business</button>
+  </div>
+
+  <div data-fields="bridging">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Amount <b id="b-amount-out" style="color:var(--accent-strong);">£300,000</b></label>
+        <input id="b-amount" type="range" min="50000" max="5000000" step="50000" value="300000" style="width:100%;" />
+      </div>
+      <div class="form-field">
+        <label>Loan-to-value <b id="b-ltv-out" style="color:var(--accent-strong);">55%</b></label>
+        <input id="b-ltv" type="range" min="20" max="75" step="1" value="55" style="width:100%;" />
+      </div>
+    </div>
+    <p style="color:var(--muted); font-size:0.9rem;">Rate: <b id="out-rate" style="color:var(--ink);">0.64%</b> per month</p>
+  </div>
+
+  <div data-fields="business" hidden>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Amount <b id="s-amount-out" style="color:var(--accent-strong);">£100,000</b></label>
+        <input id="s-amount" type="range" min="10000" max="1000000" step="10000" value="100000" style="width:100%;" />
+      </div>
+      <div class="form-field">
+        <label>Term <b id="s-term-out" style="color:var(--accent-strong);">24 months</b></label>
+        <input id="s-term" type="range" min="3" max="60" step="1" value="24" style="width:100%;" />
+      </div>
+    </div>
+    <p style="color:var(--muted); font-size:0.9rem;">Rate: <b id="out-rate2" style="color:var(--ink);">from 1.5%</b> per 30 days</p>
+  </div>
+
+  <div class="stat-band" style="grid-template-columns:1fr 1fr 1fr; border:0; padding:0; margin-top:.4rem;">
+    <div><span>Monthly</span><b style="display:block; font-size:1.3rem;" id="out-monthly">—</b></div>
+    <div><span>Fee</span><b style="display:block; font-size:1.3rem;" id="out-fee">—</b></div>
+    <div><span>Total cost</span><b style="display:block; font-size:1.3rem;" id="out-total">—</b></div>
+  </div>
+  <p class="note" style="margin-bottom:0;">Indicative only — exact pricing is confirmed after a credit-backed application.</p>
+</div>
+
+<script>
+  const money = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+
+  function rateForLtv(l) {
+    if (l <= 55) return 0.64;
+    if (l <= 65) return 0.69;
+    return 0.74;
+  }
+
+  const el = (id) => document.querySelector(`#shop-calc #${id}`);
+
+  function calc() {
+    const mode = document.querySelector('#shop-calc .tab.active').dataset.mode;
+    if (mode === 'bridging') {
+      const amount = Number(el('b-amount').value);
+      const ltv = Number(el('b-ltv').value);
+      const rate = rateForLtv(ltv);
+      const monthly = (amount * rate) / 100;
+      const fee = amount * 0.02;
+      el('b-amount-out').textContent = money.format(amount);
+      el('b-ltv-out').textContent = ltv + '%';
+      el('out-rate').textContent = rate.toFixed(2) + '%';
+      el('out-monthly').textContent = money.format(monthly) + ' /mo';
+      el('out-fee').textContent = money.format(fee);
+      el('out-total').textContent = money.format(fee + monthly);
+    } else {
+      const amount = Number(el('s-amount').value);
+      const term = Number(el('s-term').value);
+      el('s-amount-out').textContent = money.format(amount);
+      el('s-term-out').textContent = term + ' months';
+      el('out-rate2').textContent = 'from 1.5%';
+      el('out-monthly').textContent = money.format(amount / term) + ' /mo';
+      el('out-fee').textContent = '£0';
+      el('out-total').textContent = 'arranged in writing';
+    }
+  }
+
+  document.querySelectorAll('#shop-calc .tab').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#shop-calc .tab').forEach((b) => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('#shop-calc [data-fields]').forEach((f) => (f.hidden = f.dataset.fields !== btn.dataset.mode));
+      calc();
+    });
+  });
+
+  ['b-amount', 'b-ltv', 's-amount', 's-term'].forEach((id) => {
+    el(id).addEventListener('input', calc);
+  });
+
+  calc();
+</script>

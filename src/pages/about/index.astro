@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site.mjs';
+---
+
+<Base
+  title="About | The Funding Desk"
+  description="The Funding Desk is a plain-English publication and lender helping business owners and property investors understand finance before they apply."
+>
+  <section class="masthead" style="padding-bottom:1rem;">
+    <div class="container">
+      <span class="eyebrow">About</span>
+      <h1>Why the jargon has to go</h1>
+      <p class="sub">{site.masthead} We publish the guides first, then let the products speak for themselves — because the price list shouldn’t be behind a phone call.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0.5rem;">
+    <div class="container" style="max-width:820px;">
+      <div class="section-head">
+        <span class="eyebrow">The idea</span>
+        <h2>Good decisions need plain language and published prices</h2>
+      </div>
+      <p style="color:var(--muted);">
+        Business owners and property investors are told to “just call us”. We think the opposite order works better:
+        learn first, compare second, apply third. Every guide here is written to survive contact with an actual underwriter.
+      </p>
+      <ul class="tick-list">
+        <li>Rates and fee schedules published, not gated behind a form.</li>
+        <li>Every acronym in the glossary before it appears in a headline.</li>
+        <li>An exit strategy and worked examples in every product guide.</li>
+        <li>Applications held by the same underwriter from start to finish.</li>
+      </ul>
+      <div style="margin-top:1.6rem;">
+        <a class="btn btn-primary" href="/library/">Browse the library</a> {''}
+        <a class="btn btn-ghost" href="/compare/">Open the comparison table</a>
+      </div>
+    </div>
+  </section>
+</Base>

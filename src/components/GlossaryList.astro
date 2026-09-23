@@ -1,0 +1,12 @@
+---
+import { glossary } from '../data/resources.mjs';
+---
+
+<div class="glossary-list">
+  {glossary.map((g) => (
+    <details>
+      <summary>{g.term}</summary>
+      <p>{g.def}</p>
+    </details>
+  ))}
+</div>

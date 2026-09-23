@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import GlossaryList from '../../components/GlossaryList.astro';
+import { glossary } from '../../data/resources.mjs';
+---
+
+<Base
+  title="Glossary | The Funding Desk"
+  description="The Funding Desk glossary — LTV, GDV, ERC, factor rate and every other finance acronym translated."
+>
+  <section class="masthead" style="padding-bottom:1rem;">
+    <div class="container">
+      <span class="eyebrow">Glossary</span>
+      <h1>The acronyms, translated</h1>
+      <p class="sub">{glossary.length} terms — LTV, GDV, ERC, AIP, exit strategy and more — decoded so the guides read the way they were written.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0.5rem;">
+    <div class="container">
+      <GlossaryList />
+    </div>
+  </section>
+</Base>

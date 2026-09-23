@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import { guides, glossary } from '../data/resources.mjs';
+import { products } from '../data/products.mjs';
+import { site } from '../data/site.mjs';
+
+const featured = guides[0];
+const rest = guides.slice(1);
+const groups = [...new Set(guides.map((g) => g.group))];
+---
+
+<Base
+  title="The Funding Desk | Guides to business & property finance"
+  description="Plain-English guides to business loans, bridging finance and property lending — rates, fees and the questions lenders actually ask."
+>
+  <section class="masthead">
+    <div class="container">
+      <span class="eyebrow">{site.tagline}</span>
+      <h1>Finance, translated.</h1>
+      <p class="sub">Business loans, bridging and property finance explained the way a good colleague would — the rates, the fees, and the questions lenders are actually working through.</p>
+      <a class="btn btn-primary" href="/library/">Open the library</a> {''}
+      <a class="btn btn-ghost" href="/compare/">Compare products</a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container">
+      <a class="article-card" style="padding:2rem;" href={`/library/${featured.slug}/`}>
+        <div class="meta-line">Featured · {featured.group} · {featured.read}</div>
+        <h3 style="font-size:2rem; max-width:24ch;">{featured.title}</h3>
+        <p style="font-size:1.05rem; max-width:60ch;">{featured.intro}</p>
+        <span class="read">Read the full guide →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1rem;">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">The library</span>
+        <h2>Latest guides</h2>
+      </div>
+      <div class="grid-articles">
+        {rest.map((g) => (
+          <a class="article-card" href={`/library/${g.slug}/`}>
+            <div class="meta-line">{g.group}</div>
+            <h3>{g.title}</h3>
+            <p>{g.teaser}</p>
+            <span class="read">{g.read} →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="border-top:1px solid var(--border);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Browse by topic</span>
+        <h2>Pick a subject</h2>
+      </div>
+      <div class="grid-articles" style="grid-template-columns:repeat(4,1fr);">
+        {groups.map((gg) => {
+          const count = guides.filter((g) => g.group === gg).length;
+          return (
+          <a class="card" href="/library/" style="text-decoration:none; min-height:110px; display:flex; flex-direction:column; justify-content:flex-end;">
+            <b style="color:var(--accent-strong); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:.8rem; text-transform:uppercase; letter-spacing:.08em;">{gg}</b>
+            <span style="margin-top:.4rem;">{count} guide{count !== 1 ? 's' : ''}</span>
+          </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="border-top:1px solid var(--border);">
+    <div class="container">
+      <div class="grid-articles" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="card">
+          <span class="eyebrow">Compare</span>
+          <h3 style="margin:.5rem 0;">Six products side by side</h3>
+          <p style="color:var(--muted); margin-bottom:1.2rem;">Rates, ranges, fees and exit behaviour in one table — no phone call required.</p>
+          <a class="btn btn-ghost" href="/compare/">Open the table</a>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Glossary</span>
+          <h3 style="margin:.5rem 0;">Decode the acronyms</h3>
+          <p style="color:var(--muted); margin-bottom:1.2rem;">LTV, GDV, ERC, AIP… {glossary.length} terms translated into plain English.</p>
+          <a class="btn btn-ghost" href="/glossary/">Open the glossary</a>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Apply</span>
+          <h3 style="margin:.5rem 0;">When you’re ready to talk</h3>
+          <p style="color:var(--muted); margin-bottom:1.2rem;">A two-minute form, a soft check, and a written offer before you commit to anything.</p>
+          <a class="btn btn-primary" href="/apply/">Start an application</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

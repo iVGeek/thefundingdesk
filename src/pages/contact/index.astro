@@ -1,0 +1,111 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site.mjs';
+---
+
+<Base
+  title="Contact | The Funding Desk"
+  description="Contact The Funding Desk about a facility or an existing case."
+>
+  <section class="masthead" style="padding-bottom:1rem;">
+    <div class="container">
+      <span class="eyebrow">Contact</span>
+      <h1>A question desk, not a ticket queue</h1>
+      <p class="sub">Questions about the guides, the glossary or an application go to real people — answer within a business day.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0.5rem;">
+    <div class="container">
+      <div class="grid-articles" style="grid-template-columns:1fr 1fr; align-items:start;">
+        <div>
+          <div class="card" style="margin-bottom:1rem;">
+            <h3 style="margin-top:0;">Reach the desk</h3>
+            <ul class="tick-list" style="margin:0;">
+              <li>Phone: <a href={`tel:${site.phone.replace(/ /g, '')}`} style="font-weight:700;">{site.phone}</a></li>
+              <li>Email: <a href={`mailto:${site.email}`} style="font-weight:700;">{site.email}</a></li>
+              <li>Post: {site.address}</li>
+            </ul>
+            <p style="color:var(--muted); font-size:.9rem; margin-bottom:0;">{site.hours}. {site.fca}.</p>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0;">Two-minute application</h3>
+            <p style="color:var(--muted); margin:0;">The fastest way to an answer on pricing is the <a href="/apply/" style="color:var(--accent-strong); font-weight:700;">application form</a> — soft check, written offer, no commitment until you agree.</p>
+          </div>
+        </div>
+
+        <div class="card" style="padding:1.8rem;">
+          <h2 style="margin-top:0;">Send a message</h2>
+          <form id="desk-contact" data-endpoint={site.formEndpoint}>
+            <div class="form-field">
+              <label for="c-name">Name</label>
+              <input id="c-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="c-email">Email</label>
+                <input id="c-email" name="email" type="email" autocomplete="email" required />
+              </div>
+              <div class="form-field">
+                <label for="c-topic">Topic</label>
+                <select id="c-topic" name="topic">
+                  <option>Question about a guide</option>
+                  <option>Business finance</option>
+                  <option>Bridging</option>
+                  <option>Development / refinance</option>
+                  <option>Existing case</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="c-message">Message</label>
+              <textarea id="c-message" name="message" rows="5" required></textarea>
+            </div>
+            <label class="consent" style="margin:0.6rem 0 1rem;">
+              <input type="checkbox" required />
+              <span>I agree The Funding Desk may use the details above to respond and, if relevant, assess an application.</span>
+            </label>
+            <button class="btn btn-dark" type="submit" style="width:100%;">Send message</button>
+          </form>
+
+          <div id="desk-contact-success" hidden style="text-align:center; padding:1.5rem 0;">
+            <div style="font-size:2rem;">✓</div>
+            <h3 style="margin:0.4rem 0;">Message received</h3>
+            <p style="color:var(--muted);">We answer on business days during {site.hours.toLowerCase()}.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('desk-contact');
+  const success = document.getElementById('desk-contact-success');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    const endpoint = form.dataset.endpoint;
+    if (endpoint) {
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('endpoint error');
+      } catch (err) {
+        btn.disabled = false;
+        alert('The form could not be sent. Please email hello@thefundingdesk.co.uk instead.');
+        return;
+      }
+    } else {
+      console.warn('[FundingDesk] No formEndpoint set in src/data/site.mjs — showing local success state only.');
+    }
+    form.hidden = true;
+    success.hidden = false;
+  });
+</script>

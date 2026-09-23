@@ -1,0 +1,84 @@
+﻿---
+import { site } from '../data/site.mjs';
+---
+
+<div class="card" style="padding:1.8rem;">
+  <h2 style="margin-top:0;">Apply in two minutes</h2>
+  <p style="color:var(--muted); margin-top:0;">Soft check only — no credit-score impact. An underwriter replies on business days.</p>
+
+  <form id="shop-apply" data-endpoint={site.formEndpoint}>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="app-purpose">Purpose</label>
+        <select id="app-purpose" name="purpose">
+          <option value="">Select a purpose…</option>
+          <option>Working capital</option>
+          <option>Stock &amp; equipment</option>
+          <option>Revenue-based finance</option>
+          <option>Chain break / auction purchase</option>
+          <option>Capital raising</option>
+          <option>Refurbishment / development</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="app-amount">Approximate amount</label>
+        <input id="app-amount" name="amount" type="text" inputmode="numeric" placeholder="e.g. 150,000" />
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="app-name">Name</label>
+        <input id="app-name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="form-field">
+        <label for="app-phone">Phone</label>
+        <input id="app-phone" name="phone" type="tel" autocomplete="tel" required />
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="app-email">Email</label>
+      <input id="app-email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <label class="consent" style="margin:0.6rem 0 1rem;">
+      <input type="checkbox" required />
+      <span>I confirm this is my business/case and understand the eligibility check is soft.</span>
+    </label>
+    <button class="btn btn-primary" type="submit" style="width:100%;">Send enquiry</button>
+  </form>
+
+  <div id="shop-apply-success" hidden style="text-align:center; padding:1.5rem 0;">
+    <div style="font-size:2rem;">✓</div>
+    <h3 style="margin:0.4rem 0;">Enquiry received</h3>
+    <p style="color:var(--muted);">An underwriter will come back to you on business days during {site.hours.toLowerCase()}.</p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('shop-apply');
+  const success = document.getElementById('shop-apply-success');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    const endpoint = form.dataset.endpoint;
+    if (endpoint) {
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('endpoint error');
+      } catch (err) {
+        btn.disabled = false;
+        alert('The form could not be sent. Please email hello@thefundingdesk.co.uk instead.');
+        return;
+      }
+    } else {
+      console.warn('[FundingDesk] No formEndpoint set in src/data/site.mjs — showing local success state only.');
+    }
+    form.hidden = true;
+    success.hidden = false;
+  });
+</script>

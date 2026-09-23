@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site.mjs';
+---
+
+<Base
+  title="Legal & Compliance | The Funding Desk"
+  description="Regulatory and legal information for The Funding Desk."
+>
+  <section class="masthead" style="padding-bottom:1rem;">
+    <div class="container">
+      <span class="eyebrow">Legal &amp; compliance</span>
+      <h1>The small print, in plain English</h1>
+      <p class="sub">Placeholder regulatory statement — replace with final wording from your compliance advisers before launch.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0.5rem;">
+    <div class="container" style="max-width:820px;">
+      <div class="card" style="margin-bottom:1.4rem;">
+        <h2 style="margin-top:0;">Regulation</h2>
+        <p>{site.name} (placeholder, company no. {site.companyNo}) is authorised and regulated by the Financial Conduct Authority as
+          a consumer credit firm under {site.fca}. <b>Commercial finance, including most bridging loans and all business lending,
+          is generally unregulated</b>: these products are not covered by the Financial Ombudsman Service or the Financial Services
+          Compensation Scheme except as required by law.</p>
+        <p>Our guides are general information, not financial advice. Bridging finance normally requires a clear exit strategy, and
+          you should confirm figures in a written offer rather than relying on any illustrative example here.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:1.4rem;">
+        <h2 style="margin-top:0;">Representative example</h2>
+        <p>Facility £300,000 arranged over 12 months at 0.64% per month (interest-only). Monthly interest £1,920; arrange fee
+          £6,000 (2%). Total payable £310,920 including fees. <b>Representative 21.8% APR.</b> Rates vary with LTV, term and risk;
+          exact terms are confirmed in a written offer.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:1.4rem;">
+        <h2 style="margin-top:0;">Cookies</h2>
+        <p>This site stores a single consent cookie in your browser before running any analytics or personalisation scripts. You can
+          withdraw or change consent through the banner or your browser settings. The site has no advertising cookies and does not
+          sell your data.</p>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0;">Complaints</h2>
+        <p>If you are unhappy with our service, tell us — every complaint goes to a director. If you remain dissatisfied and the
+          complaint concerns a regulated activity, you may refer it to the Financial Ombudsman Service (date placeholder — replace
+          with live contact details).</p>
+      </div>
+
+      <p class="disclosure" style="margin-top:1.6rem;">{site.footerNote}</p>
+    </div>
+  </section>
+</Base>

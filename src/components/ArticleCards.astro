@@ -1,0 +1,14 @@
+---
+import { guides } from '../data/resources.mjs';
+---
+
+<div class="grid-articles">
+  {guides.map((g) => (
+    <a class="article-card" href={`/library/${g.slug}/`}>
+      <div class="meta-line">{g.group}</div>
+      <h3>{g.title}</h3>
+      <p>{g.teaser}</p>
+      <span class="read">{g.read} →</span>
+    </a>
+  ))}
+</div>
